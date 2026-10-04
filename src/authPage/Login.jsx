@@ -93,13 +93,20 @@ export default function Login() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-6xl grid md:grid-cols-2 bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-[#cc440077]"
       >
-        {/* Left Side - Image */}
-        <div className="hidden md:block relative shadow-xl">
-          <img
-            src="/auth/student.png"
-            alt="Coffee"
-            className="w-full h-full object-cover"
-          />
+        {/* HCC welcome panel */}
+        <div className="hidden md:flex relative flex-col justify-center gap-10 bg-gradient-to-br from-orange-600 to-orange-900 px-12 py-16 text-white">
+          <div className="rounded-2xl bg-white p-6">
+            <img
+              src="/wordmark.png"
+              alt="Hospitality Competence Center Africa"
+              className="w-full h-auto"
+            />
+          </div>
+          <div>
+            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-orange-100">HCC School SMS</p>
+            <h1 className="text-4xl font-bold leading-tight">Your learning journey starts here.</h1>
+            <p className="mt-5 text-lg leading-relaxed text-orange-100">Access your classes, track your progress, and stay connected with Hospitality Competence Center Africa.</p>
+          </div>
         </div>
 
         {/* Right Side - Form */}
