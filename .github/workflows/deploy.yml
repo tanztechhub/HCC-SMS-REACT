@@ -1,0 +1,87 @@
+name: Build and deploy HCC frontend
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hcc-frontend-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VITE_API_URL: ${{ vars.VITE_API_URL || 'https://hcc.tanzhotelms.com/hcc-sms' }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Mark the deployed build
+        run: |
+          node -e 'const fs=require("fs");const p="dist/index.html";fs.writeFileSync(p,fs.readFileSync(p,"utf8").replace("</head>",`<meta name="hcc-build" content="${process.env.GITHUB_SHA}" /></head>`));'
+          find dist -type d -exec chmod 755 {} \;
+          find dist -type f -exec chmod 644 {} \;
+
+      - name: Check deployment configuration
+        id: config
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          if [[ -n "$VPS_HOST" && -n "$VPS_USER" && -n "$VPS_SSH_KEY" && -n "$VPS_KNOWN_HOSTS" ]]; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            echo '::notice::Build passed. Deployment skipped until the four VPS secrets are configured.'
+          fi
+
+      - name: Deploy built frontend
+        if: steps.config.outputs.ready == 'true'
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+          VPS_PORT: ${{ vars.VPS_SSH_PORT || '22' }}
+        run: |
+          set -euo pipefail
+          [[ "$VPS_HOST" =~ ^[a-zA-Z0-9.-]+$ && "$VPS_USER" =~ ^[a-zA-Z0-9_-]+$ && "$VPS_PORT" =~ ^[0-9]+$ ]]
+          latest_commit="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [[ "$latest_commit" != "$GITHUB_SHA" ]]; then
+            echo 'A newer main commit exists; this older deployment is skipped.'
+            exit 0
+          fi
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s\n' "$VPS_SSH_KEY" > "$HOME/.ssh/hcc_deploy"
+          printf '%s\n' "$VPS_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/hcc_deploy" "$HOME/.ssh/known_hosts"
+          trap 'rm -f "$HOME/.ssh/hcc_deploy"' EXIT
+          ssh_command="ssh -i $HOME/.ssh/hcc_deploy -p $VPS_PORT -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=15"
+          ssh -i "$HOME/.ssh/hcc_deploy" -p "$VPS_PORT" \
+            -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=15 \
+            "$VPS_USER@$VPS_HOST" 'test -d /var/www/hcc-sms && test -w /var/www/hcc-sms'
+          # Upload content-hashed assets first. Keep old assets for open browser tabs.
+          rsync -az --exclude='/index.html' -e "$ssh_command" dist/ "$VPS_USER@$VPS_HOST:/var/www/hcc-sms/"
+          scp -i "$HOME/.ssh/hcc_deploy" -P "$VPS_PORT" \
+            -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=15 \
+            dist/index.html "$VPS_USER@$VPS_HOST:/var/www/hcc-sms/.index-$GITHUB_SHA.html"
+          ssh -i "$HOME/.ssh/hcc_deploy" -p "$VPS_PORT" \
+            -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=15 \
+            "$VPS_USER@$VPS_HOST" "chmod 644 /var/www/hcc-sms/.index-$GITHUB_SHA.html && mv /var/www/hcc-sms/.index-$GITHUB_SHA.html /var/www/hcc-sms/index.html && curl -fsS --resolve hcc.tanzhotelms.com:443:127.0.0.1 https://hcc.tanzhotelms.com/ | grep -q '$GITHUB_SHA'"
