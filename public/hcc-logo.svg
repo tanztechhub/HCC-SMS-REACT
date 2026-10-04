@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="490" viewBox="0 0 1100 490" role="img" aria-labelledby="title">
+  <title id="title">HCC — Hospitality Competence Center Africa</title>
+  <g fill="#cc4400">
+    <text x="20" y="305" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="350" letter-spacing="-15">HCC</text>
+    <path d="M845 72 A145 145 0 1 1 845 285" stroke="#cc4400" stroke-width="12" fill="none"/>
+    <path d="M899 120 929 110 953 117 973 113 986 150 1007 172 1021 169 1012 193 993 208 987 229 974 243 966 265 950 280 937 275 927 244 918 220 924 200 910 183 885 180 875 168 877 150 887 130Z"/>
+    <path d="M998 248 1004 236 1008 250 1002 262 997 259Z"/>
+    <text x="26" y="398" font-family="Arial, Helvetica, sans-serif" font-size="59" font-weight="700" letter-spacing="2">HOSPITALITY COMPETENCE</text>
+    <text x="26" y="470" font-family="Arial, Helvetica, sans-serif" font-size="59" font-weight="700" letter-spacing="2">CENTER AFRICA</text>
+  </g>
+</svg>
