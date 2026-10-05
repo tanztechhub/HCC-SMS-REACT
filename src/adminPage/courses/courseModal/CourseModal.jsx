@@ -16,9 +16,7 @@ export default function CourseModal({ isOpen, onClose, course, onSave, isSubmitt
     if (course) {
       setFormData({
         ...course,
-        examScheme: course.examScheme?.length > 0
-          ? course.examScheme
-          : [{ name: "", weight: "" }]
+        examScheme: course.examScheme || []
       })
     } else {
       setFormData({

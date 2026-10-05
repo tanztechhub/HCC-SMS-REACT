@@ -31,6 +31,8 @@ export default function Courses() {
   }, [])
 
   const fetchCourses = async () => {
+    setIsLoading(true)
+    setLoadError("")
     try {
       const response = await fetch(`${API_URL}/courses`)
       const data = await response.json()
