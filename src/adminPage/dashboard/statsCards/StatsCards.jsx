@@ -1,3 +1,4 @@
+import { MdSchool, MdPeople, MdBadge, MdInventory2 } from "react-icons/md"
 import { useState, useEffect } from "react"
 import toast from "react-hot-toast";
 import LoadingSpinner from "../../../components/loadingSpinner/LoadingSpinner";
@@ -51,54 +52,37 @@ export default function StatsCards() {
       title: "Students",
       total: "Total Students",
       count: students.length,
-      bgColor: "bg-cyan-500",
+      tone: "orange", icon: <MdSchool />,
     },
     {
       title: "Tutors",
       total: "Total Tutors",
       count: tutors.length,
-      bgColor: "bg-purple-500",
+      tone: "violet", icon: <MdPeople />,
     },
     {
       title: "Staff",
       total: "Total Staff",
       count: staff.length,
-      bgColor: "bg-blue-500",
+      tone: "cyan", icon: <MdBadge />,
     },
     {
       title: "Inventory",
       total: "Total Inventory Items",
       count: inventory.length,
-      bgColor: "bg-pink-500",
+      tone: "gold", icon: <MdInventory2 />,
     },
   ]
 
   return (
-    <div className="my-6 p-6 rounded-lg shadow-lg bg-white">
-      <h1 className="text-2xl font-semibold mb-6 text-orange-800">
-        Welcome - Hospitality Competence Center Africa | Admin
-      </h1>
-
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-white">
-        {stats.map((stat, index) => (
-          <div
-            key={index}
-            className={`${stat.bgColor} rounded-lg p-6 text-white transition-transform hover:scale-105 cursor-pointer`}
-          >
-            <p className="text-2xl font-bold mb-2 text-white">{stat.title}</p>
-            <p className="text-white mb-2">{stat.total}</p>
-            <div className="text-4xl font-bold flex text-white">
-              {loading ? (
-                <LoadingSpinner size={20} />
-              ) : (
-                <span>{stat.count}</span> 
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
+    <div className="hcc-dashboard-stats" aria-busy={loading}>
+      {stats.map((stat) => (
+        <article key={stat.title} className={`hcc-dashboard-stat hcc-dashboard-stat--${stat.tone}`}>
+          <div className="hcc-dashboard-stat-top"><h3>{stat.title}</h3><span aria-hidden="true">{stat.icon}</span></div>
+          <div className="hcc-dashboard-stat-count">{loading ? <LoadingSpinner size={20} /> : stat.count}</div>
+          <p>{stat.total}</p>
+        </article>
+      ))}
     </div>
   )
 }

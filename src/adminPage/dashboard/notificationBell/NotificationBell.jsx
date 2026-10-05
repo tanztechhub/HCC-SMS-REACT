@@ -56,6 +56,8 @@ const NotificationBell = () => {
     return (
         <div className="relative" ref={dropdownRef}>
             <button
+                aria-label="Notifications"
+                aria-expanded={isOpen}
                 onClick={() => setIsOpen(!isOpen)}
                 className="p-2 hover:bg-gray-100 rounded-full relative cursor-pointer"
             >

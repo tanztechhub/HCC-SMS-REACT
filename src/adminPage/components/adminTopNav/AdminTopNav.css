@@ -1,0 +1,16 @@
+.hcc-topbar { color: #28221e; }
+.hcc-topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; min-height: 72px; flex-wrap: wrap; }
+.hcc-topbar-workspace { font-size: 14px; font-weight: 800; color: #cc4400; white-space: nowrap; }
+.hcc-topbar-workspace > span { font-weight: 500; color: #80736a; }
+.hcc-topbar [class*="rounded"] { border-radius: 0; }
+.hcc-topbar input { background: #f5f3f1; border: 1px solid #e5dfda; font-size: 12px; height: 38px; }
+.hcc-topbar button { min-height: 38px; }
+.hcc-topbar button[aria-label="Forum updates"], .hcc-topbar button[aria-label="Notifications"] { border: 1px solid #e5dfda; color: #716357; background: #fff; }
+.hcc-topbar button[aria-label="Account menu"] { border: 1px solid #e5dfda; background: #faf7f4; }
+.hcc-topbar-account { display: flex; flex-direction: column; text-align: left; gap: 2px; padding: 0 4px; }
+.hcc-topbar-account strong { font-size: 12px; color: #332a24; }
+.hcc-topbar-account span { font-size: 10px; text-transform: capitalize; color: #86766a; }
+.hcc-topbar img { object-fit: cover; }
+.hcc-topbar :is(button, a):focus-visible { outline: 2px solid #cc4400; outline-offset: 2px; }
+@media (max-width: 1200px) { .hcc-topbar input { width: 155px; } .hcc-topbar-inner { padding: 12px 20px; } .hcc-topbar-inner > div { gap: 10px; } }
+@media (max-width: 900px) { .hcc-topbar-inner > div:last-child > .relative:first-child input { display: none; } .hcc-topbar-account { max-width: 100px; } .hcc-topbar-account strong { overflow: hidden; text-overflow: ellipsis; } }

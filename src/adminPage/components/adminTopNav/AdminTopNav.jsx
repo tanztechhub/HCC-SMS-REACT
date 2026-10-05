@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Menu } from "lucide-react"
+import "./AdminTopNav.css"
 import { useNavigate } from "react-router-dom"
 import { MdSearch, MdPerson, MdLogout, MdSettings } from "react-icons/md"
 import { MessageSquare } from "lucide-react"
@@ -66,17 +66,16 @@ export default function AdminTopNav() {
   }
 
   return (
-    <div className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-md">
-      <div className="flex items-center justify-between px-4 py-2">
+    <div className="hcc-topbar sticky top-0 z-50 bg-white border-b border-gray-200">
+      <div className="hcc-topbar-inner">
         {/* Left section */}
         <div className="flex items-center gap-4">
-          <button className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer">
-            <Menu className="h-6 w-6" />
-          </button>
+          <span className="hcc-topbar-workspace">HCC <span>/ Admin</span></span>
           <div className="relative">
             <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
+              aria-label="Search"
               placeholder="Search..."
               className="pl-10 pr-4 py-2 rounded-lg bg-[#9a3412]/10 w-64 focus:outline-none focus:ring-2 focus:ring-[#9a3412]/20"
             />
@@ -89,6 +88,7 @@ export default function AdminTopNav() {
           <div className="relative">
             <input
               type="text"
+              aria-label="Student name or admission number"
               placeholder="Name/Admission No."
               className="pl-4 pr-4 py-2 rounded-lg bg-[#9a3412]/10 w-48 focus:outline-none focus:ring-2 focus:ring-[#9a3412]/20"
             />
@@ -97,6 +97,8 @@ export default function AdminTopNav() {
           {/* Forum Notifications */}
           <div className="relative" ref={forumNotificationRef}>
             <button
+              aria-label="Forum updates"
+              aria-expanded={showForumNotifications}
               onClick={() => setShowForumNotifications(!showForumNotifications)}
               className="p-2 hover:bg-gray-100 rounded-full relative cursor-pointer"
             >
@@ -138,10 +140,12 @@ export default function AdminTopNav() {
           {/* Profile */}
           <div className="relative" ref={profileRef}>
             <button
+              aria-label="Account menu"
+              aria-expanded={showProfile}
               onClick={() => setShowProfile(!showProfile)}
               className="flex items-center gap-2 p-2 hover:bg-orange-200 rounded-lg bg-orange-100 cursor-pointer"
             >
-              <div className="font-bold text-gray-600">{loggedInUser.username}</div>
+              <div className="hcc-topbar-account"><strong>{loggedInUser.username}</strong><span>{loggedInUser.role} admin</span></div>
               <img
                 src={loggedInUser.profileImage || "/profile/student.jpg"}
                 alt="Profile"
@@ -153,7 +157,7 @@ export default function AdminTopNav() {
             {showProfile && (
               <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200">
                 <div className="p-2">
-                  <div className="px-3 py-2 text-sm text-gray-500">HCC portal link pending</div>
+                  <div className="px-3 py-2 text-sm text-gray-500">HCC School Management</div>
                   <div className="px-3 py-2 font-medium capitalize">{loggedInUser.role} admin</div>
                   <hr className="my-1" />
                   <NavLink
