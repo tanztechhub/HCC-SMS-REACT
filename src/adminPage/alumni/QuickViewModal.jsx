@@ -1,3 +1,4 @@
+import ImportedStudentDetails from "../../components/ImportedStudentDetails"
 import { X } from "lucide-react"
 
 export default function QuickViewModal({ alumnus, onClose }) {
@@ -10,6 +11,7 @@ export default function QuickViewModal({ alumnus, onClose }) {
             <X className="h-6 w-6" />
           </button>
         </div>
+        <ImportedStudentDetails source={alumnus.importSource} />
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="font-semibold">Name:</p>
@@ -29,11 +31,11 @@ export default function QuickViewModal({ alumnus, onClose }) {
           </div>
           <div>
             <p className="font-semibold">Graduation Date:</p>
-            <p>{new Date(alumnus.graduationDate).toLocaleDateString()}</p>
+            <p>{alumnus.graduationDate ? new Date(alumnus.graduationDate).toLocaleDateString() : "-"}</p>
           </div>
           <div>
             <p className="font-semibold">Fee Paid:</p>
-            <p>Ksh. {alumnus.upfrontFee.toLocaleString()}</p>
+            <p>{alumnus.upfrontFee == null ? "-" : `Ksh. ${alumnus.upfrontFee.toLocaleString()}`}</p>
           </div>
           <div>
             <p className="font-semibold">Email:</p>

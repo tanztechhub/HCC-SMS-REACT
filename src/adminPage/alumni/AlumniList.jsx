@@ -299,7 +299,7 @@ export default function AlumniList() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{alumnus.courseName}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{alumnus.academicYear}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{new Date(alumnus.graduationDate).toLocaleDateString()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{alumnus.graduationDate ? new Date(alumnus.graduationDate).toLocaleDateString() : "-"}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {alumnus.isCertificateReady ? (
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
