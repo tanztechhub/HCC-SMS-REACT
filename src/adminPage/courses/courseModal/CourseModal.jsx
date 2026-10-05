@@ -9,7 +9,7 @@ export default function CourseModal({ isOpen, onClose, course, onSave, isSubmitt
     duration: "",
     fee: "",
     cardColor: "bg-blue-500",
-    examScheme: [{ name: "", weight: "" }]
+    examScheme: []
   })
 
   useEffect(() => {
@@ -27,10 +27,10 @@ export default function CourseModal({ isOpen, onClose, course, onSave, isSubmitt
         duration: "",
         fee: "",
         cardColor: "bg-blue-500",
-        examScheme: [{ name: "", weight: "" }]
+        examScheme: []
       })
     }
-  }, [course])
+  }, [course, isOpen])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -63,7 +63,7 @@ export default function CourseModal({ isOpen, onClose, course, onSave, isSubmitt
   }
 
   const removeExam = (index) => {
-    if (formData.examScheme.length > 1) {
+    if (formData.examScheme.length > 0) {
       const newExamScheme = formData.examScheme.filter((_, i) => i !== index)
       setFormData({ ...formData, examScheme: newExamScheme })
     }
@@ -81,10 +81,10 @@ export default function CourseModal({ isOpen, onClose, course, onSave, isSubmitt
   ]
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg w-full max-w-md max-h-[95%] p-6 overflow-y-scroll">
+    <div className="hcc-course-modal-overlay">
+      <div className="hcc-course-modal" role="dialog" aria-modal="true" aria-labelledby="hcc-course-modal-title">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">{course ? "Edit Course" : "Add New Course"}</h2>
+          <h2 id="hcc-course-modal-title" className="text-xl font-semibold">{course ? "Edit Course" : "Add New Course"}</h2>
           <button
             onClick={onClose}
             disabled={isSubmitting}
@@ -178,6 +178,7 @@ export default function CourseModal({ isOpen, onClose, course, onSave, isSubmitt
               </button>
             </div>
 
+            <p className="hcc-course-modal-hint">Optional. Add assessment weights only when they are confirmed.</p>
             {formData.examScheme.map((exam, index) => (
               <div key={index} className="flex gap-2 mb-2">
                 <input
@@ -195,14 +196,15 @@ export default function CourseModal({ isOpen, onClose, course, onSave, isSubmitt
                   onChange={(e) => handleExamChange(index, "weight", e.target.value)}
                   placeholder="Weight %"
                   className="w-24 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#cc4400]"
-                  min="0"
+                  min="1"
                   max="100"
                   disabled={isSubmitting}
                   required
                 />
-                {formData.examScheme.length > 1 && (
+                {formData.examScheme.length > 0 && (
                   <button
                     type="button"
+                    aria-label={`Remove exam ${index + 1}`}
                     onClick={() => removeExam(index)}
                     disabled={isSubmitting}
                     className="p-2 text-red-500 hover:bg-red-50 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"

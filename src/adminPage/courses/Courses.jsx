@@ -1,3 +1,4 @@
+import "./Courses.css"
 import { useState, useEffect } from "react"
 import { Coffee, BookOpen, PenTool, Target, CirclePlus } from "lucide-react"
 import { LuRefreshCw } from "react-icons/lu";
@@ -17,6 +18,8 @@ const courseIcons = {
 
 export default function Courses() {
   const [courses, setCourses] = useState([])
+  const [search, setSearch] = useState("")
+  const [loadError, setLoadError] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedCourse, setSelectedCourse] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -44,6 +47,7 @@ export default function Courses() {
       toast.success("Courses fetched successfully")
       setCourses(coursesWithIcons)
     } catch (error) {
+      setLoadError(error.message)
       toast.error(error.message)
     } finally {
       setIsLoading(false)
@@ -143,53 +147,19 @@ export default function Courses() {
   }
 
 
+  const visibleCourses = courses.filter((course) => `${course.name} ${course.description}`.toLowerCase().includes(search.toLowerCase()))
   return (
-    <>
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-semibold text-orange-800">Our Courses</h1>
-          <div className="flex gap-2">
-
-            <button
-              disabled={isLoading || isSubmitting}
-              onClick={fetchCourses}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors cursor-pointer"
-            >
-              {isLoading ? <LoadingSpinner size={15} /> : <LuRefreshCw />}
-              Refresh List
-            </button>
-            <button
-              onClick={handleAddCourse}
-              disabled={isSubmitting}
-              className="px-4 py-2 bg-[#cc4400] flex items-center cursor-pointer gap-2 text-white rounded-lg hover:bg-[#cc4400]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <CirclePlus />
-              Add New Course
-            </button>
-          </div>
+    <div className="hcc-courses">
+      <header className="hcc-courses-heading">
+        <div><p className="hcc-courses-eyebrow">02 / ACADEMIC PROGRAMMES</p><h1>Courses</h1><p>Manage course offerings, fees and assessment details.</p></div>
+        <div className="hcc-courses-toolbar">
+          <button type="button" className="hcc-courses-button" disabled={isLoading || isSubmitting} onClick={fetchCourses}><LuRefreshCw size={16} />Refresh</button>
+          <button type="button" className="hcc-courses-button hcc-courses-button-primary" disabled={isSubmitting} onClick={handleAddCourse}><CirclePlus size={16} />Add course</button>
         </div>
-
-        <div className="grid gap-6">
-          {courses.map((course) => (
-            <CourseCard
-              key={course._id}
-              course={course}
-              onEdit={handleEditCourse}
-              onDelete={handleDeleteCourse}
-              disabled={isSubmitting}
-            />
-          ))}
-        </div>
-
-        <CourseModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          course={selectedCourse}
-          onSave={handleSaveCourse}
-          isSubmitting={isSubmitting}
-        />
-      </div>
-    </>
+      </header>
+      <div className="hcc-courses-filter"><span>{courses.length} course{courses.length === 1 ? "" : "s"} available</span><input type="search" aria-label="Search courses" placeholder="Search courses..." value={search} onChange={(e) => setSearch(e.target.value)} /></div>
+      {isLoading ? <div className="hcc-courses-empty" role="status">Loading courses...</div> : loadError ? <div className="hcc-courses-empty" role="alert">{loadError} <button type="button" className="hcc-courses-button" onClick={fetchCourses}>Try again</button></div> : visibleCourses.length === 0 ? <div className="hcc-courses-empty">{search ? "No courses match your search." : "No courses yet. Add your first course to get started."}</div> : <div className="hcc-courses-grid">{visibleCourses.map((course) => <CourseCard key={course._id} course={course} onEdit={handleEditCourse} onDelete={handleDeleteCourse} disabled={isSubmitting} />)}</div>}
+      <CourseModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} course={selectedCourse} onSave={handleSaveCourse} isSubmitting={isSubmitting} />
+    </div>
   )
 }
-
