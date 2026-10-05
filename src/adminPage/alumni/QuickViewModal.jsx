@@ -3,11 +3,11 @@ import { X } from "lucide-react"
 
 export default function QuickViewModal({ alumnus, onClose }) {
   return (
-    <div className="fixed inset-0 bg-orange-600/25 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center z-50">
-      <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-2xl">
+    <div className="hcc-records-modal-overlay">
+      <div className="hcc-records-modal" role="dialog" aria-modal="true" aria-label="Student record details">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Alumni Details</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 cursor-pointer">
+          <button aria-label="Close details" onClick={onClose} className="text-gray-500 hover:text-gray-700 cursor-pointer">
             <X className="h-6 w-6" />
           </button>
         </div>

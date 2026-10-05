@@ -1,8 +1,9 @@
+import "../components/records/Records.css"
 "use client"
 
 import { useState, useEffect } from "react"
 import { toast } from "react-hot-toast"
-import { Search, Eye, Filter, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, Eye, Filter, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react"
 import QuickViewModal from "./QuickViewModal"
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -143,24 +144,17 @@ export default function AlumniList() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredAlumni.slice(indexOfFirstItem, indexOfLastItem)
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-15 w-15 border-t-2 border-b-2 border-orange-600"></div>
-      </div>
-    )
-  }
-
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-orange-800">Alumni List</h1>
+    <div className="hcc-records hcc-alumni">
+      <header className="hcc-records-heading"><div><p className="hcc-records-eyebrow">04 / ALUMNI REGISTER</p><h1>Alumni</h1><p>Completed enrolments, certificates and graduate details.</p></div><button className="hcc-records-button" onClick={fetchAlumni} disabled={isLoading}><RefreshCw size={16} />Refresh list</button></header>
       
       {/* Search and filter section */}
-      <div className="mb-6 bg-white p-4 rounded-lg shadow">
+      <div className="hcc-records-filters">
         <div className="flex items-center gap-2 mb-4">
           <div className="relative flex-grow">
             <input
               type="text"
+              aria-label="Search alumni"
               placeholder="Search alumni..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -169,6 +163,7 @@ export default function AlumniList() {
             <Search className="absolute left-3 top-2.5 text-gray-400" />
           </div>
           <button 
+            aria-expanded={showFilters}
             onClick={() => setShowFilters(!showFilters)}
             className="p-2 bg-orange-600 text-white rounded-md flex items-center gap-1 hover:bg-orange-700 cursor-pointer"
           >
@@ -269,8 +264,8 @@ export default function AlumniList() {
       </div>
       
       {/* Table */}
-      <div className="overflow-x-auto bg-white rounded-lg shadow">
-        <table className="min-w-full">
+      <div className="overflow-x-auto hcc-records-table-panel">
+        <table className="min-w-full hcc-records-table">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
@@ -291,19 +286,19 @@ export default function AlumniList() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {currentItems.length > 0 ? (
+            {isLoading ? <tr><td colSpan="7" className="hcc-records-empty" role="status">Loading alumni...</td></tr> : currentItems.length > 0 ? (
               currentItems.map((alumnus) => (
                 <tr key={alumnus._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {alumnus.firstName} {alumnus.lastName}
+                    {alumnus.firstName} {alumnus.lastName}<span className="hcc-records-subtext">{alumnus.admissionNumber}</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{alumnus.courseName}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{alumnus.courseName}{alumnus.importSource && <span className="hcc-records-subtext">{alumnus.importSource.cohort}</span>}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{alumnus.academicYear}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{alumnus.graduationDate ? new Date(alumnus.graduationDate).toLocaleDateString() : "-"}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {alumnus.isCertificateReady ? (
+                    {alumnus.importSource ? <span className="hcc-records-certificate">{alumnus.importSource.certificateCollection || "-"}</span> : alumnus.isCertificateReady ? (
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
-                        Collected
+                        Ready
                       </span>
                     ) : (
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
@@ -313,7 +308,7 @@ export default function AlumniList() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{alumnus.nationality}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <button onClick={() => handleQuickView(alumnus)} className="text-orange-600 hover:text-orange-900 cursor-pointer">
+                    <button aria-label={`View ${alumnus.firstName} ${alumnus.lastName}`} onClick={() => handleQuickView(alumnus)} className="text-orange-600 hover:text-orange-900 cursor-pointer">
                       <Eye className="h-5 w-5" />
                     </button>
                   </td>
@@ -335,6 +330,7 @@ export default function AlumniList() {
         <div className="mt-4 flex justify-between items-center">
           <div>
             <button
+              aria-label="Previous alumni page"
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className="p-2 border border-gray-300 rounded-md mr-2 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -372,6 +368,7 @@ export default function AlumniList() {
             </div>
             
             <button
+              aria-label="Next alumni page"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
               className="p-2 border border-gray-300 rounded-md ml-2 disabled:opacity-50 disabled:cursor-not-allowed"

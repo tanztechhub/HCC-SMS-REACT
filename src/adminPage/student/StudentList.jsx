@@ -1,3 +1,4 @@
+import "../components/records/Records.css"
 "use client"
 
 import { useState, useEffect } from "react"
@@ -39,7 +40,6 @@ export default function StudentList() {
       const response = await fetch(`${API_URL}/students`);
       const data = await response.json();
       if (data.success) {
-        toast.success("List Fetched successfully!");
         setStudents(data.data);
   
         // Extract unique course names
@@ -67,8 +67,10 @@ export default function StudentList() {
     return nameMatch && admNoMatch && courseMatch && genderMatch
   })
 
+  useEffect(() => { setCurrentPage(1) }, [searchName, searchAdmNo, selectedCourse, selectedGender, students.length])
+
   // Pagination
-  const totalPages = Math.ceil(filteredStudents.length / itemsPerPage)
+  const totalPages = Math.max(1, Math.ceil(filteredStudents.length / itemsPerPage))
   const startIndex = (currentPage - 1) * itemsPerPage
   const paginatedStudents = filteredStudents.slice(startIndex, startIndex + itemsPerPage)
 
@@ -87,28 +89,28 @@ export default function StudentList() {
 
   return (
     <>
-      <div className="p-6">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-gray-800">Manage Students</h1>
+      <div className="hcc-records hcc-students">
+        <div className="hcc-records-heading">
+          <div><p className="hcc-records-eyebrow">03 / STUDENT REGISTER</p><h1>Students</h1><p>Manage active enrolments and student details.</p></div>
           <div className="flex gap-2 items-center">
             <button
               disabled={isLoading}
               onClick={fetchStudents}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors cursor-pointer"
+              className="hcc-records-button"
             >
               {isLoading ? <LoadingSpinner size={15} /> : <LuRefreshCw />}
               Refresh List
             </button>
-            <Link to={`/admin-dashboard/admission`} className="flex items-center gap-2 px-4 py-2 bg-[#fb923c] text-white rounded-lg hover:bg-[#ea580c] hover:shadow-md transition-colors cursor-pointer">
+            <Link to={`/admin-dashboard/admission`} className="hcc-records-button hcc-records-primary">
               <Plus className="h-5 w-5" />
-              ADD STUDENT
+              Add student
             </Link>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="hcc-records-filters">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Search by Name</label>
               <input
@@ -156,18 +158,19 @@ export default function StudentList() {
                 <option value="All">All</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
+                <option value="-">Not provided</option>
               </select>
             </div>
           </div>
         </div>
 
         {/* Student Table */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden p-4">
-          <div className="px-4 mb-4 flex justify-between">
-            <h4 className="text-orange-800 text-xl font-bold">Student List</h4>
+        <div className="hcc-records-table-panel">
+          <div className="hcc-records-panel-heading">
+            <h2>Active students</h2><span>{filteredStudents.length} enrolments</span>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full hcc-records-table">
               <thead className="bg-gray-200">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -191,7 +194,7 @@ export default function StudentList() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {paginatedStudents.map((student) => (
+                {isLoading ? <tr><td colSpan="6" className="hcc-records-empty" role="status">Loading students...</td></tr> : paginatedStudents.length === 0 ? <tr><td colSpan="6" className="hcc-records-empty">No students match your filters.</td></tr> : paginatedStudents.map((student) => (
                   <tr key={student._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <img
@@ -203,15 +206,16 @@ export default function StudentList() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{student.admissionNumber}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">{`${student.firstName} ${student.lastName}`}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">{student.gender}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">{student.courseName}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">{student.courseName}{student.importSource && <span className="hcc-records-subtext">{student.importSource.cohort} / Result: {student.importSource.result}</span>}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <button
+                        aria-label={`View ${student.firstName} ${student.lastName}`}
                         onClick={() => handleQuickView(student)}
                         className="text-blue-600 hover:text-blue-800 mr-2 bg-gray-400/20 rounded-full p-2 cursor-pointer"
                       >
                         <Eye className="h-5 w-5" />
                       </button>
-                      <button onClick={() => handleEdit(student.admissionNumber)} className="text-orange-600 hover:text-orange-800 bg-gray-400/20 rounded-full p-2 cursor-pointer">
+                      <button aria-label={`Edit ${student.firstName} ${student.lastName}`} onClick={() => handleEdit(student.admissionNumber)} className="text-orange-600 hover:text-orange-800 bg-gray-400/20 rounded-full p-2 cursor-pointer">
                         <Edit2 className="h-5 w-5" />
                       </button>
                     </td>
@@ -224,11 +228,12 @@ export default function StudentList() {
           {/* Pagination */}
           <div className="px-6 py-4 flex items-center justify-between border-t">
             <div className="text-sm text-gray-700">
-              Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredStudents.length)} of{" "}
+              Showing {filteredStudents.length ? startIndex + 1 : 0} to {Math.min(startIndex + itemsPerPage, filteredStudents.length)} of{" "}
               {filteredStudents.length} results
             </div>
             <div className="flex items-center gap-2">
               <button
+                aria-label="Previous students page"
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
@@ -237,8 +242,9 @@ export default function StudentList() {
               </button>
               <span className="px-4 py-2 rounded-lg bg-orange-500 text-white">{currentPage}</span>
               <button
+                aria-label="Next students page"
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
+                disabled={currentPage >= totalPages}
                 className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <ChevronRight className="h-5 w-5" />
