@@ -315,8 +315,8 @@ export default function AttendanceTracking() {
 
   return (
     <>
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6 text-orange-900">Attendance Tracking</h1>
+      <div className="hcc-teaching-page">
+        <div className="hcc-teaching-heading"><p className="hcc-teaching-eyebrow">10 / STUDENT ATTENDANCE</p><h1>Attendance</h1><p>Track attendance by cohort and teaching session.</p></div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>

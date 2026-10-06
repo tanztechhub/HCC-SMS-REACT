@@ -114,10 +114,10 @@ export default function TutorsList() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
+    <div className="hcc-teaching-page">
+      <div className="hcc-teaching-inner">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-orange-800">Tutors List</h1>
+          <div className="hcc-teaching-heading"><p className="hcc-teaching-eyebrow">08 / TEACHING TEAM</p><h1>Tutors</h1><p>Tutor profiles, courses and contact details.</p></div>
           <div className="flex gap-4">
             <button
               disabled={isLoading}

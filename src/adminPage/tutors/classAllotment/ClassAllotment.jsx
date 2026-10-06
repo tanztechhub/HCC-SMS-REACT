@@ -519,11 +519,11 @@ export default function ClassAllotmentRedesign() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="container mx-auto px-4 py-8">
+        <div className="hcc-teaching-page">
+            <div className="hcc-teaching-inner">
                 {/* Header */}
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold text-orange-700">Class Management System</h1>
+                    <div className="hcc-teaching-heading"><p className="hcc-teaching-eyebrow">09 / CLASS ALLOTMENT</p><h1>Class allotment</h1><p>Organise cohorts, assign tutors and place students.</p></div>
                     <button
                         onClick={fetchData}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"

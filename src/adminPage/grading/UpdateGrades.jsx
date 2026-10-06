@@ -262,9 +262,9 @@ export default function UpdateGrades() {
   }
 
   return (
-    <div className="p-6">
+    <div className="hcc-teaching-page">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-        <h1 className="text-2xl font-bold text-orange-800">Update Student Grades (Admin)</h1>
+        <div className="hcc-teaching-heading"><p className="hcc-teaching-eyebrow">11 / EXAMS & ASSESSMENT</p><h1>Exams & grades</h1><p>Review assessments and update student grades.</p></div>
         <button
           onClick={handleUpdateAllGrades}
           className="mt-4 md:mt-0 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 flex items-center gap-2 transition-colors cursor-pointer"

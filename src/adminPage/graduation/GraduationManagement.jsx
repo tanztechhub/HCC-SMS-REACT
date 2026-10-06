@@ -260,8 +260,8 @@ export default function GraduationManagement() {
 
   return (
     <>
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6 text-orange-800">Graduation Management</h1>
+      <div className="hcc-teaching-page">
+        <div className="hcc-teaching-heading"><p className="hcc-teaching-eyebrow">12 / COURSE COMPLETION</p><h1>Graduation</h1><p>Review student eligibility and manage graduation.</p></div>
 
         {/* Filters Section */}
         <div className="bg-white p-4 rounded-lg shadow-md mb-6">

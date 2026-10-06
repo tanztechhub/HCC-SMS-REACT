@@ -1,0 +1,27 @@
+.hcc-teaching { background: #eceef2; min-height: calc(100vh - 72px); color: #232833; }
+.hcc-teaching-page { padding: 28px 28px 48px; }
+.hcc-teaching-heading { margin-bottom: 24px; }
+.hcc-teaching .flex > .hcc-teaching-heading { margin-bottom: 0; }
+.hcc-teaching-heading h1 { font-size: 28px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; color: #232833; }
+.hcc-teaching-heading > p:last-child { color: #707986; font-size: 13px; }
+.hcc-teaching-eyebrow { color: #cc4400; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 8px; }
+.hcc-teaching [class*="rounded"]:not(.animate-spin) { border-radius: 0; }
+.hcc-teaching :is(input,select,textarea) { font-size: 12px; background: #fafbfc; border-color: #d7dce3; border-width: 1px; min-height: 38px; }
+.hcc-teaching input[type="checkbox"], .hcc-teaching input[type="radio"] { min-height: auto; accent-color: #cc4400; }
+.hcc-teaching label { font-size: 11px; }
+.hcc-teaching .bg-white[class*="shadow"] { border: 1px solid #dfe3e9; box-shadow: none; }
+.hcc-teaching h2 { font-size: 16px; }
+.hcc-teaching button { font-size: 12px; }
+.hcc-teaching button.bg-blue-500 { background: #fff; border: 1px solid #d7dce3; color: #5f6a78; }
+.hcc-teaching button.bg-orange-500, .hcc-teaching button.bg-orange-600, .hcc-teaching button.bg-orange-700 { background: #cc4400; }
+.hcc-teaching table { font-size: 12px; }
+.hcc-teaching thead { background: #f6f7f9; }
+.hcc-teaching th { padding: 13px 16px; font-size: 10px; font-weight: 650; color: #75808d; }
+.hcc-teaching td { padding: 14px 16px; font-size: 12px; }
+.hcc-teaching :is(button,a,input,select,textarea):focus-visible { outline: 2px solid #cc4400; outline-offset: 2px; }
+.hcc-teaching button:disabled { cursor: not-allowed; }
+.hcc-teaching .fixed.inset-0 { padding: 24px; background: #19202e80; z-index: 60; }
+.hcc-teaching .fixed.inset-0 > .bg-white { border-top: 4px solid #cc4400; max-height: calc(100dvh - 48px); overflow-y: auto; height: auto; box-shadow: 0 20px 70px #0003; }
+.hcc-teaching .hover\:scale-105:hover { transform: none; }
+@media (max-width: 1000px) { .hcc-teaching-inner > .flex.justify-between.items-center.mb-6 { flex-wrap: wrap; gap: 16px; align-items: flex-start; } }
+@media (max-width: 750px) { .hcc-teaching-page { padding: 20px 16px 36px; } .hcc-teaching .fixed.inset-0 { padding: 12px; } .hcc-teaching .fixed.inset-0 > .bg-white { max-width: 100%; } }

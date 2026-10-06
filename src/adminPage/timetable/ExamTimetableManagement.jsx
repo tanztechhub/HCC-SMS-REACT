@@ -224,8 +224,8 @@ export default function ExamTimetableManagement() {
 
     return (
         <>
-            <div className="p-6">
-                <h1 className="text-2xl font-bold mb-6 text-orange-800">Exam Timetable Management</h1>
+            <div className="hcc-teaching-page">
+                <div className="hcc-teaching-heading"><p className="hcc-teaching-eyebrow">13 / SCHOOL SCHEDULE</p><h1>Exam timetable</h1><p>Plan lessons, exams and school events.</p></div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     {/* Exam Form */}
