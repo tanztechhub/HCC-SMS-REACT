@@ -1,0 +1,6 @@
+.hcc-pwa-install { position: fixed; bottom: 16px; right: 16px; z-index: 40; font-size: 12px; }
+.hcc-pwa-button { background: #cc4400; color: #fff; padding: 11px 16px; border: 1px solid #ad3900; cursor: pointer; box-shadow: 0 3px 12px #0002; }
+.hcc-pwa-help { background: #fff; border: 1px solid #dfe3e9; border-top: 3px solid #cc4400; color: #232833; padding: 18px; max-width: 280px; margin-bottom: 8px; }
+.hcc-pwa-help p { line-height: 1.6; margin: 8px 0; }
+.hcc-pwa-help button { border: 1px solid #dfe3e9; padding: 6px 12px; cursor: pointer; }
+.hcc-pwa-install button:focus-visible { outline: 2px solid #cc4400; outline-offset: 2px; }

@@ -1,3 +1,4 @@
+import PwaInstall from "./components/PwaInstall"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Toaster } from "react-hot-toast"
 
@@ -63,6 +64,7 @@ export default function App() {
     <Router>
       <Toaster position="top-right" />
 
+      <PwaInstall />
       <Routes>
         {/* AUTH ROUTES (NO SIDEBAR) */}
         <Route path="/" element={<LoginProtect><AuthLayout><Login /></AuthLayout></LoginProtect>} />
