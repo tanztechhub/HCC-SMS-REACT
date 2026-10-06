@@ -16,8 +16,8 @@ export default function PopUp({ isOpen, onClose, status, data }) {
   const receiptShareUrl = receipt ? `${window.location.origin}/document/receipt/${receipt.receiptNumber}` : null;
 
   return (
-    <div className="fixed w-full h-[100vh] top-0 right-0 bg-orange-500/15 flex items-center justify-center z-50">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-[750px] max-h-[90vh] overflow-y-auto">
+    <div className="hcc-admissions-modal-overlay">
+      <div className="hcc-admissions-modal bg-white shadow-lg rounded-lg p-6 w-[750px] max-h-[90vh] overflow-y-auto">
         {status === "loading" && (
           <div className="flex flex-col items-center">
             <img src={loadingGif || "/loaders/circular-loaders.gif"} alt="Loading" className="w-16 h-16 mb-4" />

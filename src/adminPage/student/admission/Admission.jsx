@@ -1,3 +1,4 @@
+import "../Admissions.css"
 import { useState, useEffect } from "react"
 import { Upload } from "lucide-react"
 import { toast } from "react-hot-toast"
@@ -362,12 +363,12 @@ export default function StudentAdmission() {
     const pageTitle = isEditMode ? 'Update Student' : 'Student Admission';
 
     return (
-        <div className="relative">
+        <div className="hcc-admissions hcc-admission-form">
             <PopUp isOpen={popUpState.isOpen} onClose={closePopUp} status={popUpState.status} data={popUpState.data} />
 
-            <div className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                    <h1 className="text-2xl font-semibold text-gray-800">{pageTitle}</h1>
+            <div>
+                <div className="hcc-admissions-heading hcc-admissions-heading-row">
+                    <div><p className="hcc-admissions-eyebrow">06 / STUDENT ADMISSION</p><h1>{pageTitle}</h1><p>Academic, personal and emergency contact details.</p></div>
                     <div className="flex items-center gap-2">
                         <button
                             disabled={isLoadingCourses}

@@ -111,8 +111,8 @@ export default function AdmitModal({ application, onClose, onAdmit }) {
     };
     
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="hcc-admissions-modal-overlay">
+            <div className="hcc-admissions-modal bg-white rounded-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
                 <div className="p-6">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-2">

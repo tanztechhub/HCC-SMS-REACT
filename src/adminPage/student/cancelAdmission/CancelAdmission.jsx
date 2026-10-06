@@ -1,3 +1,4 @@
+import "../Admissions.css"
 "use client"
 
 import { useState } from "react"
@@ -72,9 +73,9 @@ export default function CancelAdmission() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl text-center font-bold text-gray-800 mb-8">Cancel Admission</h1>
+    <div className="hcc-admissions hcc-cancel-admission">
+      <div>
+        <header className="hcc-admissions-heading"><p className="hcc-admissions-eyebrow">07 / ADMISSION CANCELLATION</p><h1>Cancel admission</h1><p>Find a student and review their record before cancelling admission.</p></header>
         <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
           <h2 className="text-xl font-semibold mb-2">Student Lookup</h2>
           <p className="text-gray-600 mb-4">Enter the admission number to find a student</p>
@@ -119,11 +120,11 @@ export default function CancelAdmission() {
           </div>
           <div>
             <p className="font-semibold text-orange-800">Date of Birth:</p>
-            <p>{new Date(student.dateOfBirth).toLocaleDateString()}</p>
+            <p>{student.dateOfBirth ? new Date(student.dateOfBirth).toLocaleDateString() : "-"}</p>
           </div>
           <div>
             <p className="font-semibold text-orange-800">Course:</p>
-            <p>{student.course}</p>
+            <p>{student.courseName || student.course}</p>
           </div>
           <div>
             <p className="font-semibold text-orange-800">Academic Year:</p>

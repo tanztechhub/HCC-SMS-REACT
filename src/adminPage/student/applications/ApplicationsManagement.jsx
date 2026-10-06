@@ -1,3 +1,4 @@
+import "../Admissions.css"
 // components/ApplicationsManagement.jsx
 import { useState, useEffect } from 'react';
 import { Search, Filter, Eye, XCircle, CheckCircle, RefreshCw } from 'lucide-react';
@@ -221,9 +222,9 @@ export default function ApplicationsManagement() {
     };
 
     return (
-        <div className="p-6">
-            <div className="mb-6">
-                <h1 className="text-2xl font-semibold text-gray-800 mb-2">Applications Management</h1>
+        <div className="hcc-admissions hcc-applications">
+            <div className="hcc-admissions-heading"><p className="hcc-admissions-eyebrow">05 / APPLICATION REVIEW</p>
+                <h1 className="text-2xl font-semibold text-gray-800 mb-2">Applications</h1>
                 <p className="text-gray-600">Review, reject, or admit student applications</p>
             </div>
 
